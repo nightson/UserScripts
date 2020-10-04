@@ -3,12 +3,12 @@
 // @namespace   nightson1988@gmail.com
 // @include     https://www.suruga-ya.jp/product/detail/*
 // @grant       none
-// @version     0.2
+// @version     0.3
 // @author      nightson
 // @description Add a link that redirects the current product page to the corresponding Masadora one.
 // ==/UserScript==
 (function (){
-  var targetNode = document.querySelector(".toreka");
+  var targetNode = document.querySelector("#cart");
 
   var a = document.createElement("a");
 
