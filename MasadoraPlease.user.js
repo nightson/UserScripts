@@ -1,11 +1,12 @@
 // ==UserScript==
-// @name        Give me Masadora, Please
+// @name        Masadora, Please
 // @namespace   nightson1988@gmail.com
 // @include     https://www.suruga-ya.jp/product/detail/*
 // @grant       none
-// @version     0.3
+// @version     0.4
 // @author      nightson
 // @description Add a link that redirects the current product page to the corresponding Masadora one.
+// @icon        http://masadora-js.masadora.net/static/new_masadora/images/favicon/masadora-icon.png
 // ==/UserScript==
 (function (){
   var targetNode = document.querySelector("#cart");
