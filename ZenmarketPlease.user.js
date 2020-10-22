@@ -7,6 +7,7 @@
 // @author      nightson
 // @description Add a link that redirects the current product page to the Zenmarket one.
 // @icon        https://zenmarket.jp/favicon.ico?1
+// @updateURL   https://github.com/nightson/UserScripts/raw/main/ZenmarketPlease.user.js
 // ==/UserScript==
 (function (){
   var targetNode = document.querySelector(".Price__buttonArea a");
