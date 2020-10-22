@@ -7,6 +7,7 @@
 // @author      nightson
 // @description Add a link that redirects the current product page to the corresponding Masadora one.
 // @icon        http://masadora-js.masadora.net/static/new_masadora/images/favicon/masadora-icon.png
+// @updateURL   https://raw.githubusercontent.com/nightson/UserScripts/main/MasadoraPlease.user.js
 // ==/UserScript==
 (function (){
   var targetNode = document.querySelector("#cart");
