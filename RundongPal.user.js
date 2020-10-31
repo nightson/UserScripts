@@ -7,6 +7,7 @@
 // @author      nightson
 // @description Script that makes Rundong more user-friendly.
 // @updateURL   https://raw.githubusercontent.com/nightson/UserScripts/main/RundongPal.user.js
+// @downloadURL https://raw.githubusercontent.com/nightson/UserScripts/main/RundongPal.user.js
 // ==/UserScript==
 (function (){
   let nodes = document.querySelectorAll('#collapseContent1 td[id^="td_remark_"] a');
