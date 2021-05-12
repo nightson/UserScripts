@@ -6,6 +6,8 @@
 // @version     0.1
 // @author      nightson
 // @description Make submission easier than ever before!
+// @updateURL   https://github.com/nightson/UserScripts/raw/main/RedumpReimagined.user.js
+// @downloadURL https://github.com/nightson/UserScripts/raw/main/RedumpReimagined.user.js
 // ==/UserScript==
 (function (){
   let fragment = document.createDocumentFragment(),
