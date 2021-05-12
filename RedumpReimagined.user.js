@@ -135,7 +135,7 @@
     fillForm('#d_cue', file.tracks_and_write_offsets.d_cue);
     //Disc Offset
     if (document.querySelector('input[value="' + file.tracks_and_write_offsets.d_offset_text + '"]')) {
-      checkBySelector('input[name="d_offset[]"][value="' + file.versions_and_editions.d_editions_text + '"]');
+      checkBySelector('input[name="d_offset[]"][value="' + file.tracks_and_write_offsets.d_offset_text + '"]');
     } else {
        fillForm('#d_offset_text', file.tracks_and_write_offsets.d_offset_text);
     }
