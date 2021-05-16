@@ -3,7 +3,7 @@
 // @namespace   nightson1988@gmail.com
 // @match       http://redump.org/newdisc/*
 // @grant       none
-// @version     0.2
+// @version     0.2.1
 // @author      nightson
 // @description Make submission easier than ever before!
 // @updateURL   https://github.com/nightson/UserScripts/raw/main/RedumpReimagined.user.js
@@ -98,7 +98,7 @@
       //d_libcrypt
       fillForm('#d_libcrypt', subInfo.copy_protection.d_libcrypt);
       //Protection
-      if ((subInfo.copy_protection.d_protection).trim() != 'None found') {
+      if (typeof subInfo.copy_protection.d_protection != undefined) {
         fillForm('#d_protection', subInfo.copy_protection.d_protection);
       }
       //SecuROM data
@@ -124,7 +124,6 @@
       fillForm('#d_md5', subInfo.size_and_checksums.d_md5);
       fillForm('#d_sha1', subInfo.size_and_checksums.d_sha1);
     } else if (/^-{80}/.test(str)) {//Check if string is in my own submission info format. 
-      //WIP
     } else {
       console.log ('Redump Reimagined || Error: Unknown Information Format!');
     }
@@ -183,10 +182,22 @@
   function fillForm(cssSelector, value) {
     if (!document.querySelector(cssSelector)) {
       console.log('Redump Reimagined || Error: CSS selector "' + cssSelector + '" doesn\'t match any element on the page!');
-    } else if (typeof value === 'undefined' || value.trim() == '') {
+    } else if (typeof value === 'undefined' || value.toString().trim() === '') {
       console.log('Redump Reimagined || Error: Value doesn\'t exist!');
     } else {
-      document.querySelector(cssSelector).value = value;
+      switch (value.toString().trim()){
+        case 'Disc has no PVD': 
+          console.log('Redump Reimagined || Disc has no PVD');
+          break;
+        case 'None found': 
+          console.log('Redump Reimagined || Protection not found');
+          break;
+        case 'Path could not be scanned!': 
+          console.log('Redump Reimagined || Path could not be scanned!');
+          break;
+        default: 
+          document.querySelector(cssSelector).value = value;
+      }
     }
   }
   
