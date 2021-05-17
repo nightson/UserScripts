@@ -3,7 +3,7 @@
 // @namespace   nightson1988@gmail.com
 // @match       http://redump.org/newdisc/*
 // @grant       none
-// @version     0.2.1
+// @version     0.2.2
 // @author      nightson
 // @description Make submission easier than ever before!
 // @updateURL   https://github.com/nightson/UserScripts/raw/main/RedumpReimagined.user.js
@@ -111,10 +111,14 @@
       //Cue
       fillForm('#d_cue', subInfo.tracks_and_write_offsets.d_cue);
       //Disc Offset
-      if (document.querySelector('input[value="' + subInfo.tracks_and_write_offsets.d_offset_text + '"]')) {
-        checkBySelector('input[name="d_offset[]"][value="' + subInfo.tracks_and_write_offsets.d_offset_text + '"]');
-      } else {
-         fillForm('#d_offset_text', subInfo.tracks_and_write_offsets.d_offset_text);
+      if (typeof subInfo.tracks_and_write_offsets.d_offset_text != undefined) {
+        let offsetValue = (parseInt(subInfo.tracks_and_write_offsets.d_offset_text.trim()) > 0) ? ('+' + subInfo.tracks_and_write_offsets.d_offset_text) : subInfo.tracks_and_write_offsets.d_offset_text;
+        console.log(offsetValue);
+        if (document.querySelector('input[value="' + offsetValue + '"]')) {
+          checkBySelector('input[name="d_offset[]"][value="' + offsetValue + '"]');
+        } else {
+          fillForm('#d_offset_text', offsetValue);
+        }
       }
       
       /* Size & checksums (DVD/BD/UMD-based) */
@@ -138,7 +142,7 @@
         return value;
       }
     }
-    document.getElementById('d_subinfo').value = JSON.stringify(file, filter, 2).replace(/\[T:ISBN\] \(OPTIONAL\)|\(REQUIRED\)|\(OPTIONAL\)|\(REQUIRED, IF EXISTS\)/g, '');//Remove Placeholders
+    document.getElementById('d_subinfo').value = JSON.stringify(file, filter, 2).replace(/\[T:ISBN\] \(OPTIONAL\)|\(REQUIRED\)|\(OPTIONAL\)|\(REQUIRED, IF EXISTS\)|\(CHECK WITH PROTECTIONID\)/g, '');//Remove Placeholders
   }
 
   //https://stackoverflow.com/questions/23344776/how-to-access-data-of-uploaded-json-file
