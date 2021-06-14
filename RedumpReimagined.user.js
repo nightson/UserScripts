@@ -3,7 +3,7 @@
 // @namespace   nightson1988@gmail.com
 // @match       http://redump.org/newdisc/*
 // @grant       none
-// @version     0.2.2
+// @version     0.2.3
 // @author      nightson
 // @description Make submission easier than ever before!
 // @updateURL   https://github.com/nightson/UserScripts/raw/main/RedumpReimagined.user.js
@@ -40,7 +40,7 @@
       //Disc Label
       fillForm('#d_label', commonInfo.d_label);
       //Disc Category
-      checkBySelector('#d_category option[value="' + commonInfo.d_category + '"]');
+      selectBySelector('#d_category option[value="' + commonInfo.d_category + '"]');
       //Region
       checkBySelector('#tr_d_region input[value="' + commonInfo.d_region + '"]');
       //Language
@@ -113,7 +113,6 @@
       //Disc Offset
       if (typeof subInfo.tracks_and_write_offsets.d_offset_text != undefined) {
         let offsetValue = (parseInt(subInfo.tracks_and_write_offsets.d_offset_text.trim()) > 0) ? ('+' + subInfo.tracks_and_write_offsets.d_offset_text) : subInfo.tracks_and_write_offsets.d_offset_text;
-        console.log(offsetValue);
         if (document.querySelector('input[value="' + offsetValue + '"]')) {
           checkBySelector('input[name="d_offset[]"][value="' + offsetValue + '"]');
         } else {
@@ -212,7 +211,15 @@
       document.querySelector(cssSelector).checked = true;
     }
   }
-  
+
+  function selectBySelector(cssSelector) {
+    if (!document.querySelector(cssSelector)){
+      console.log('Redump Reimagined || Error: CSS selector "' + cssSelector + '" doesn\'t match any element on the page!');
+    } else {
+      document.querySelector(cssSelector).selected = true;
+    }
+  }
+
   function generateRingCodesText(file) {
     let ringInfo = file.common_disc_info,
         ringCodes = '',
