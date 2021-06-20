@@ -3,7 +3,7 @@
 // @namespace   nightson1988@gmail.com
 // @match       http://redump.org/newdisc/*
 // @grant       none
-// @version     0.2.3
+// @version     0.2.4
 // @author      nightson
 // @description Make submission easier than ever before!
 // @updateURL   https://github.com/nightson/UserScripts/raw/main/RedumpReimagined.user.js
@@ -313,7 +313,7 @@
           return ringCodes;
           break;
         } else {
-          if (ringInfo.d_ring_0_ma2 || d_ring_0_ma2_sid || ringInfo.d_ring_0_ts2 || ringInfo.d_ring_0_mo2_sid || ringInfo.dr_ring_0_mo2) {
+          if (ringInfo.d_ring_0_ma2 || ringInfo.d_ring_0_ma2_sid || ringInfo.d_ring_0_ts2 || ringInfo.d_ring_0_mo2_sid || ringInfo.dr_ring_0_mo2) {
             ringCodes = 'Data Side:\n' +
                         'Mastering Ring: ' + ringInfo.d_ring_0_ma1 + '\n' + 
                         'Mastering SID: ' + ringInfo.d_ring_0_ma1_sid + '\n' + 
