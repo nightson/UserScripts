@@ -3,7 +3,7 @@
 // @namespace   nightson1988@gmail.com
 // @match       http://redump.org/newdisc/*
 // @grant       none
-// @version     0.2.4
+// @version     0.2.5
 // @author      nightson
 // @description Make submission easier than ever before!
 // @updateURL   https://github.com/nightson/UserScripts/raw/main/RedumpReimagined.user.js
@@ -111,7 +111,7 @@
       //Cue
       fillForm('#d_cue', subInfo.tracks_and_write_offsets.d_cue);
       //Disc Offset
-      if (typeof subInfo.tracks_and_write_offsets.d_offset_text != undefined) {
+      if (typeof subInfo.tracks_and_write_offsets.d_offset_text != "undefined") {
         let offsetValue = (parseInt(subInfo.tracks_and_write_offsets.d_offset_text.trim()) > 0) ? ('+' + subInfo.tracks_and_write_offsets.d_offset_text) : subInfo.tracks_and_write_offsets.d_offset_text;
         if (document.querySelector('input[value="' + offsetValue + '"]')) {
           checkBySelector('input[name="d_offset[]"][value="' + offsetValue + '"]');
