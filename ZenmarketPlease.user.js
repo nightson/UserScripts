@@ -3,7 +3,7 @@
 // @namespace   nightson1988@gmail.com
 // @include     https://page.auctions.yahoo.co.jp*auction/*
 // @grant       none
-// @version     0.1
+// @version     0.1.1
 // @author      nightson
 // @description Add a link that redirects the current product page to the Zenmarket one.
 // @icon        https://zenmarket.jp/favicon.ico?1
