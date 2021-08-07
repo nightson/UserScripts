@@ -17,7 +17,7 @@
       br = document.createElement("br");
 
   a.text = "Go ZenMarket";
-  a.href = "https://zenmarket.jp/auction.aspx?itemCode=" + document.location.href.match(/[\d,\w]{9,10}/g);
+  a.href = "https://zenmarket.jp/auction.aspx?itemCode=" + document.location.href.match(/[\d,\w]{9,11}/g);
   a.setAttribute("class", "Button--buynow");
 
   targetNode.parentNode.insertBefore(a, targetNode);
