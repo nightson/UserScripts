@@ -3,7 +3,7 @@
 // @namespace   nightson1988@gmail.com
 // @match       http://redump.org/newdisc/*
 // @grant       none
-// @version     0.2.5
+// @version     0.2.6
 // @author      nightson
 // @description Make submission easier than ever before!
 // @updateURL   https://github.com/nightson/UserScripts/raw/main/RedumpReimagined.user.js
@@ -264,7 +264,7 @@
                       'Data Side Additional Mould: ' + ringInfo.dr_ring_0_mo1 + '\n\n' +
                       'Layer 1:\n' +
                       'Mastering Ring: ' + ringInfo.d_ring_0_ma2 + '\n' +
-                      'Mastering SID: ' + ringInfo.d_ring_0_mo2_sid + '\n' +
+                      'Mastering SID: ' + ringInfo.d_ring_0_ma2_sid + '\n' +
                       'Toolstamp/Mastering Code: ' + ringInfo.d_ring_0_ts2 + '\n' +
                       'Label Side Mould SID: ' + ringInfo.d_ring_0_mo2_sid + '\n' +
                       'Label Side Additional Mould: ' + ringInfo.dr_ring_0_mo2 + '\n\n' +
@@ -287,7 +287,7 @@
                       'Data Side Additional Mould: ' + ringInfo.dr_ring_0_mo1 + '\n\n' +
                       'Layer 1:\n' +
                       'Mastering Ring: ' + ringInfo.d_ring_0_ma2 + '\n' +
-                      'Mastering SID: ' + ringInfo.d_ring_0_mo2_sid + '\n' +
+                      'Mastering SID: ' + ringInfo.d_ring_0_ma2_sid + '\n' +
                       'Toolstamp/Mastering Code: ' + ringInfo.d_ring_0_ts2 + '\n' +
                       'Label Side Mould SID: ' + ringInfo.d_ring_0_mo2_sid + '\n' +
                       'Label Side Additional Mould: ' + ringInfo.dr_ring_0_mo2 + '\n\n' +
@@ -306,7 +306,7 @@
                       'Data Side Additional Mould: ' + ringInfo.dr_ring_0_mo1 + '\n\n' +
                       (reverseOrder ? 'Layer 1 (Inner):\n' : 'Layer 1 (Outer):\n') +
                       'Mastering Ring: ' + ringInfo.d_ring_0_ma2 + '\n' +
-                      'Mastering SID: ' + ringInfo.d_ring_0_mo2_sid + '\n' +
+                      'Mastering SID: ' + ringInfo.d_ring_0_ma2_sid + '\n' +
                       'Toolstamp/Mastering Code: ' + ringInfo.d_ring_0_ts2 + '\n' +
                       'Label Side Mould SID: ' + ringInfo.d_ring_0_mo2_sid + '\n' +
                       'Label Side Additional Mould: ' + ringInfo.dr_ring_0_mo2;
@@ -322,7 +322,7 @@
                         'Additional Mould: ' + ringInfo.dr_ring_0_mo1 + '\n\n' + 
                         'Label Side: \n' +
                         'Mastering Ring: ' + ringInfo.d_ring_0_ma2 + '\n' +
-                        'Mastering SID: ' + ringInfo.d_ring_0_mo2_sid + '\n' +
+                        'Mastering SID: ' + ringInfo.d_ring_0_ma2_sid + '\n' +
                         'Toolstamp/Mastering Code: ' + ringInfo.d_ring_0_ts2 + '\n' +
                         'Mould SID: ' + ringInfo.d_ring_0_mo2_sid + '\n' +
                         'Additional Mould: ' + ringInfo.dr_ring_0_mo2;
