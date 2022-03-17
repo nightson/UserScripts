@@ -3,11 +3,12 @@
 // @namespace   nightson1988@gmail.com
 // @match       http://redump.org/newdisc/*
 // @grant       none
-// @version     0.2.6
+// @version     0.3
 // @author      nightson
 // @description Make submission easier than ever before!
 // @updateURL   https://github.com/nightson/UserScripts/raw/main/RedumpReimagined.user.js
 // @downloadURL https://github.com/nightson/UserScripts/raw/main/RedumpReimagined.user.js
+// @history     0.3 Updated to be compatible with MPF v2.3
 // ==/UserScript==
 (function (){
   //Insert submission information input
@@ -220,14 +221,17 @@
     }
   }
 
+//https://github.com/SabreTools/MPF/blob/2.3/MPF/ViewModels/DiscInformationViewModel.cs
+//https://github.com/SabreTools/MPF/blob/2.3/RedumpLib/Data/Enumerations.cs
+
   function generateRingCodesText(file) {
     let ringInfo = file.common_disc_info,
         ringCodes = '',
         reverseOrder = (['ps2','ps3', 'ps4', 'ps5'].indexOf(file.common_disc_info.d_system) > -1);
 
     switch (ringInfo.d_media) {
-      case 'cdrom':
-      case 'gdrom':
+      case 'CD':
+      case 'GD-ROM':
         if (ringInfo.d_ring_0_mo2_sid || ringInfo.dr_ring_0_mo2) {
           ringCodes = 'Data Side:\n' +
                       'Mastering Ring: ' + ringInfo.d_ring_0_ma1 + '\n' + 
@@ -249,12 +253,15 @@
           return ringCodes;
           break;
         }
-      case 'dvd':
-      case 'hddvd':
-      case 'bdrom':
-      case 'gc':
-      case 'wii':
-      case 'wiiu':
+      case 'DVD-5':
+      case 'DVD-9':
+      case 'HD-DVD SL':
+      case 'BD-25':
+      case 'BD-50':
+      case 'Nintendo GameCube Game Disc':
+      case 'Nintendo Wii Optical Disc DL':
+      case 'Nintendo Wii Optical Disc SL':
+      case 'Nintendo Wii U Optical Disc SL':
         if (file.size_and_checksums.d_layerbreak_3 != '0') {
           ringCodes = (reverseOrder ? "Layer 0 (Outer):\n" : "Layer 0 (Inner):\n") +
                       'Mastering Ring: ' + ringInfo.d_ring_0_ma1 + '\n' +
