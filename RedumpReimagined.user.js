@@ -41,7 +41,7 @@
       //Disc Label
       fillForm('#d_label', commonInfo.d_label);
       //Disc Category
-      selectBySelector('#d_category option[value="' + commonInfo.d_category + '"]');
+      selectBySelectorText('d_category', commonInfo.d_category);
       //Region
       checkBySelector('#tr_d_region input[value="' + commonInfo.d_region + '"]');
       //Language
@@ -221,6 +221,14 @@
     }
   }
 
+  function selectBySelectorText(id, text) {
+    if (!document.evaluate('//select[@id="' + id + '"]/option[text()="' + text + '"]', document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue){
+      console.log('Redump Reimagined || Error: selectBySelectorText("' + id + '", "' + text + '") doesn\'t match any element on the page!');
+    } else {
+      document.evaluate('//select[@id="' + id + '"]/option[text()="' + text + '"]', document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue.selected = true;
+    }
+  }
+  
 //https://github.com/SabreTools/MPF/blob/2.3/MPF/ViewModels/DiscInformationViewModel.cs
 //https://github.com/SabreTools/MPF/blob/2.3/RedumpLib/Data/Enumerations.cs
 
