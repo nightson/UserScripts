@@ -55,7 +55,7 @@
     	    checkBySelector('input[name="d_languages[]"][value="' + item + '"]');
         });
       }
-       //Disc Serial
+      //Disc Serial
       fillForm('#d_serial', commonInfo.d_serial);
       //Ring Codes
       fillForm('#d_ring_wip', generateRingCodesText(subInfo));
