@@ -50,9 +50,11 @@
       //Region
       checkBySelector('#tr_d_region input[value="' + commonInfo.d_region + '"]');
       //Language
-      commonInfo.d_languages.forEach(function (item) {
-        checkBySelector('input[name="d_languages[]"][value="' + item + '"]');
-      });
+      if (commonInfo.d_languages){
+  	    commonInfo.d_languages.forEach(function (item) {
+    	    checkBySelector('input[name="d_languages[]"][value="' + item + '"]');
+        });
+      }
       //Disc Serial
       fillForm('#d_serial', commonInfo.d_serial);
       //Ring Codes
