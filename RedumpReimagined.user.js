@@ -3,12 +3,13 @@
 // @namespace   nightson1988@gmail.com
 // @match       http://redump.org/newdisc/*
 // @grant       none
-// @version     0.3
+// @version     0.3.1
 // @author      nightson
 // @description Make submission easier than ever before!
 // @updateURL   https://github.com/nightson/UserScripts/raw/main/RedumpReimagined.user.js
 // @downloadURL https://github.com/nightson/UserScripts/raw/main/RedumpReimagined.user.js
-// @history     0.3 Updated to be compatible with MPF v2.3
+// @history     0.3.1 Fixed category selection and made the script compatible with older versions of MPF again.
+// @history     0.3 Updated the script to be compatible with MPF v2.3
 // ==/UserScript==
 (function (){
   //Insert submission information input
@@ -41,7 +42,11 @@
       //Disc Label
       fillForm('#d_label', commonInfo.d_label);
       //Disc Category
-      selectBySelector('#d_category option[value="' + commonInfo.d_category + '"]');
+      if (/^\d\d?$/.test(commonInfo.d_category)){
+        selectBySelector('#d_category option[value="' + commonInfo.d_category + '"]');
+      } else {
+        selectByTextContent('#d_category option', commonInfo.d_category, 2);
+      }
       //Region
       checkBySelector('#tr_d_region input[value="' + commonInfo.d_region + '"]');
       //Language
@@ -220,6 +225,30 @@
       document.querySelector(cssSelector).selected = true;
     }
   }
+  
+  function selectByTextContent(cssSelector, text, mode) {//mode 1: exact match; mode 2: includes text.
+    if (!document.querySelector(cssSelector)){
+      console.log('Redump Reimagined || Error: CSS selector "' + cssSelector + '" doesn\'t match any element on the page!');
+    } else {
+      document.querySelectorAll(cssSelector).forEach(function(node) {
+          if (!mode){
+            console.log('Redump Reimagined || Error: No mode is set for selectByTextContent.');
+          } else if (mode === 1) {
+            if (node.textContent === text) {
+              node.selected = true;
+            } else {
+              console.log('Redump Reimagined || Error: None of the elements selected by "' + cssSelector + '" has the text "' + text + '".');
+            }
+          } else if (mode === 2) {
+            if (node.textContent.includes(text)) {
+              node.selected = true;
+            } else {
+              console.log('Redump Reimagined || Error: None of the elements selected by "' + cssSelector + '" includes the text "' + text + '".');
+            }
+        }
+      });
+    }
+  }
 
 //https://github.com/SabreTools/MPF/blob/2.3/MPF/ViewModels/DiscInformationViewModel.cs
 //https://github.com/SabreTools/MPF/blob/2.3/RedumpLib/Data/Enumerations.cs
@@ -230,6 +259,9 @@
         reverseOrder = (['ps2','ps3', 'ps4', 'ps5'].indexOf(file.common_disc_info.d_system) > -1);
 
     switch (ringInfo.d_media) {
+      //Compatible with both old and new release of MPF
+      case 'cdrom':
+      case 'gdrom':
       case 'CD':
       case 'GD-ROM':
         if (ringInfo.d_ring_0_mo2_sid || ringInfo.dr_ring_0_mo2) {
@@ -253,6 +285,12 @@
           return ringCodes;
           break;
         }
+      case 'dvd':
+      case 'hddvd':
+      case 'bdrom':
+      case 'gc':
+      case 'wii':
+      case 'wiiu':
       case 'DVD-5':
       case 'DVD-9':
       case 'HD-DVD SL':
