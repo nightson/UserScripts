@@ -3,11 +3,12 @@
 // @namespace   nightson1988@gmail.com
 // @match       http://redump.org/newdisc/*
 // @grant       none
-// @version     0.3.1
+// @version     0.3.2
 // @author      nightson
 // @description Make submission easier than ever before!
 // @updateURL   https://github.com/nightson/UserScripts/raw/main/RedumpReimagined.user.js
 // @downloadURL https://github.com/nightson/UserScripts/raw/main/RedumpReimagined.user.js
+// @history     0.3.2 Compatible with MPF's ring serialization fix: https://github.com/SabreTools/MPF/commit/d1c641e93408bdd630740dbd899e719e9aac4aff
 // @history     0.3.1 Fixed category selection and made the script compatible with older versions of MPF again.
 // @history     0.3 Updated the script to be compatible with MPF v2.3
 // ==/UserScript==
@@ -266,16 +267,16 @@
       case 'gdrom':
       case 'CD':
       case 'GD-ROM':
-        if (ringInfo.d_ring_0_mo2_sid || ringInfo.dr_ring_0_mo2) {
+        if (ringInfo.d_ring_0_mo2_sid || ringInfo.dr_ring_0_mo2 || ringInfo.d_ring_0_mo2) {//https://github.com/SabreTools/MPF/commit/d1c641e93408bdd630740dbd899e719e9aac4aff
           ringCodes = 'Data Side:\n' +
                       'Mastering Ring: ' + ringInfo.d_ring_0_ma1 + '\n' + 
                       'Mastering SID: ' + ringInfo.d_ring_0_ma1_sid + '\n' + 
                       'Toolstamp/Mastering Code: ' + ringInfo.d_ring_0_ts1 + '\n' + 
                       'Mould SID: ' + ringInfo.d_ring_0_mo1_sid + '\n' + 
-                      'Additional Mould: ' + ringInfo.dr_ring_0_mo1 + '\n\n' + 
+                      'Additional Mould: ' + (ringInfo.dr_ring_0_mo1 || ringInfo.d_ring_0_mo1) + '\n\n' + 
                       'Label Side: \n' + 
                       'Mould SID: ' + ringInfo.d_ring_0_mo2_sid + '\n' + 
-                      'Additional Mould: ' + ringInfo.dr_ring_0_mo2;
+                      'Additional Mould: ' + (ringInfo.dr_ring_0_mo2 || ringInfo.d_ring_0_mo2);
           return ringCodes;
           break;
         } else {
@@ -283,7 +284,7 @@
                       'Mastering SID: ' + ringInfo.d_ring_0_ma1_sid + '\n' + 
                       'Toolstamp/Mastering Code: ' + ringInfo.d_ring_0_ts1 + '\n' + 
                       'Mould SID: ' + ringInfo.d_ring_0_mo1_sid + '\n' + 
-                      'Additional Mould: ' + ringInfo.dr_ring_0_mo1;
+                      'Additional Mould: ' + (ringInfo.dr_ring_0_mo1 || ringInfo.d_ring_0_mo1);
           return ringCodes;
           break;
         }
@@ -308,13 +309,13 @@
                       'Mastering SID: ' + ringInfo.d_ring_0_ma1_sid + '\n' +
                       'Toolstamp/Mastering Code: ' + ringInfo.d_ring_0_ts1 + '\n' +
                       'Data Side Mould SID: ' + ringInfo.d_ring_0_mo1_sid + '\n' +
-                      'Data Side Additional Mould: ' + ringInfo.dr_ring_0_mo1 + '\n\n' +
+                      'Data Side Additional Mould: ' + (ringInfo.dr_ring_0_mo1 || ringInfo.d_ring_0_mo1) + '\n\n' +
                       'Layer 1:\n' +
                       'Mastering Ring: ' + ringInfo.d_ring_0_ma2 + '\n' +
                       'Mastering SID: ' + ringInfo.d_ring_0_ma2_sid + '\n' +
                       'Toolstamp/Mastering Code: ' + ringInfo.d_ring_0_ts2 + '\n' +
                       'Label Side Mould SID: ' + ringInfo.d_ring_0_mo2_sid + '\n' +
-                      'Label Side Additional Mould: ' + ringInfo.dr_ring_0_mo2 + '\n\n' +
+                      'Label Side Additional Mould: ' + (ringInfo.dr_ring_0_mo2 || ringInfo.d_ring_0_mo2) + '\n\n' +
                       'Layer 2:\n' +
                       'Mastering Ring: ' + ringInfo.d_ring_0_ma3 + '\n' +
                       'Mastering SID: ' + ringInfo.d_ring_0_ma3_sid + '\n' +
@@ -331,13 +332,13 @@
                       'Mastering SID: ' + ringInfo.d_ring_0_ma1_sid + '\n' +
                       'Toolstamp/Mastering Code: ' + ringInfo.d_ring_0_ts1 + '\n' +
                       'Data Side Mould SID: ' + ringInfo.d_ring_0_mo1_sid + '\n' +
-                      'Data Side Additional Mould: ' + ringInfo.dr_ring_0_mo1 + '\n\n' +
+                      'Data Side Additional Mould: ' + (ringInfo.dr_ring_0_mo1 || ringInfo.d_ring_0_mo1) + '\n\n' +
                       'Layer 1:\n' +
                       'Mastering Ring: ' + ringInfo.d_ring_0_ma2 + '\n' +
                       'Mastering SID: ' + ringInfo.d_ring_0_ma2_sid + '\n' +
                       'Toolstamp/Mastering Code: ' + ringInfo.d_ring_0_ts2 + '\n' +
                       'Label Side Mould SID: ' + ringInfo.d_ring_0_mo2_sid + '\n' +
-                      'Label Side Additional Mould: ' + ringInfo.dr_ring_0_mo2 + '\n\n' +
+                      'Label Side Additional Mould: ' + (ringInfo.dr_ring_0_mo2 || ringInfo.d_ring_0_mo2) + '\n\n' +
                       (reverseOrder ? 'Layer 2 (Inner):\n' : 'Layer 2 (Outer):\n') +
                       'Mastering Ring: ' + ringInfo.d_ring_0_ma3 + '\n' +
                       'Mastering SID: ' + ringInfo.d_ring_0_ma3_sid + '\n' +
@@ -350,17 +351,17 @@
                       'Mastering SID: ' + ringInfo.d_ring_0_ma1_sid + '\n' +
                       'Toolstamp/Mastering Code: ' + ringInfo.d_ring_0_ts1 + '\n' +
                       'Data Side Mould SID: ' + ringInfo.d_ring_0_mo1_sid + '\n' +
-                      'Data Side Additional Mould: ' + ringInfo.dr_ring_0_mo1 + '\n\n' +
+                      'Data Side Additional Mould: ' + (ringInfo.dr_ring_0_mo1 || ringInfo.d_ring_0_mo1) + '\n\n' +
                       (reverseOrder ? 'Layer 1 (Inner):\n' : 'Layer 1 (Outer):\n') +
                       'Mastering Ring: ' + ringInfo.d_ring_0_ma2 + '\n' +
                       'Mastering SID: ' + ringInfo.d_ring_0_ma2_sid + '\n' +
                       'Toolstamp/Mastering Code: ' + ringInfo.d_ring_0_ts2 + '\n' +
                       'Label Side Mould SID: ' + ringInfo.d_ring_0_mo2_sid + '\n' +
-                      'Label Side Additional Mould: ' + ringInfo.dr_ring_0_mo2;
+                      'Label Side Additional Mould: ' + (ringInfo.dr_ring_0_mo2 || ringInfo.d_ring_0_mo2);
           return ringCodes;
           break;
         } else {
-          if (ringInfo.d_ring_0_ma2 || ringInfo.d_ring_0_ma2_sid || ringInfo.d_ring_0_ts2 || ringInfo.d_ring_0_mo2_sid || ringInfo.dr_ring_0_mo2) {
+          if (ringInfo.d_ring_0_ma2 || ringInfo.d_ring_0_ma2_sid || ringInfo.d_ring_0_ts2 || ringInfo.d_ring_0_mo2_sid || ringInfo.dr_ring_0_mo2 || ringInfo.d_ring_0_mo2) {
             ringCodes = 'Data Side:\n' +
                         'Mastering Ring: ' + ringInfo.d_ring_0_ma1 + '\n' + 
                         'Mastering SID: ' + ringInfo.d_ring_0_ma1_sid + '\n' + 
@@ -372,7 +373,7 @@
                         'Mastering SID: ' + ringInfo.d_ring_0_ma2_sid + '\n' +
                         'Toolstamp/Mastering Code: ' + ringInfo.d_ring_0_ts2 + '\n' +
                         'Mould SID: ' + ringInfo.d_ring_0_mo2_sid + '\n' +
-                        'Additional Mould: ' + ringInfo.dr_ring_0_mo2;
+                        'Additional Mould: ' + (ringInfo.dr_ring_0_mo2 || ringInfo.d_ring_0_mo2);
             return ringCodes;
             break;
           } else {
@@ -380,7 +381,7 @@
                         'Mastering SID: ' + ringInfo.d_ring_0_ma1_sid + '\n' + 
                         'Toolstamp/Mastering Code: ' + ringInfo.d_ring_0_ts1 + '\n' + 
                         'Mould SID: ' + ringInfo.d_ring_0_mo1_sid + '\n' + 
-                        'Additional Mould: ' + ringInfo.dr_ring_0_mo1;
+                        'Additional Mould: ' + (ringInfo.dr_ring_0_mo1 || ringInfo.d_ring_0_mo1);
             return ringCodes;
             break;
           }
