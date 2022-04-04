@@ -8,6 +8,7 @@
 // @description Make submission easier than ever before!
 // @updateURL   https://github.com/nightson/UserScripts/raw/main/RedumpReimagined.user.js
 // @downloadURL https://github.com/nightson/UserScripts/raw/main/RedumpReimagined.user.js
+// @history     0.3.3 Clear all fields after selecting an JSON file in case there is any leftover infomation.
 // @history     0.3.2 Compatible with MPF's ring serialization fix: https://github.com/SabreTools/MPF/commit/d1c641e93408bdd630740dbd899e719e9aac4aff
 // @history     0.3.1 Fixed category selection and made the script compatible with older versions of MPF again.
 // @history     0.3 Updated the script to be compatible with MPF v2.3
@@ -150,6 +151,7 @@
         return value;
       }
     }
+    resetForm('newdisc'); //Clear all fields of new disc form
     document.getElementById('d_subinfo').value = JSON.stringify(file, filter, 2).replace(/\[T:ISBN\] \(OPTIONAL\)|\(REQUIRED\)|\(OPTIONAL\)|\(REQUIRED, IF EXISTS\)|\(CHECK WITH PROTECTIONID\)/g, '');//Remove Placeholders
   }
 
