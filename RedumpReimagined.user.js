@@ -261,7 +261,22 @@
   function generateRingCodesText(file) {
     let ringInfo = file.common_disc_info,
         ringCodes = '',
-        reverseOrder = (['ps2','ps3', 'ps4', 'ps5'].indexOf(file.common_disc_info.d_system) > -1);
+        reverseOrder = (['ps2','ps3', 'ps4', 'ps5'].indexOf(file.common_disc_info.d_system) > -1),
+        getRingCode = function (value1, value2){
+          if (ringInfo[value1] == undefined){
+            if (!value2) {
+              return '';
+            } else if (ringInfo[value2] == undefined || ringInfo[value2] == '' || ringInfo[value2] == null) {
+              return '';
+            } else {
+              return ingInfo[value2];
+            }
+          } else if (ringInfo[value1] == '' || ringInfo[value1] == null) {
+            return '';
+          } else {
+            return ringInfo[value1];
+          }
+        };
 
     switch (ringInfo.d_media) {
       //Compatible with both old and new release of MPF
@@ -271,22 +286,22 @@
       case 'GD-ROM':
         if (ringInfo.d_ring_0_mo2_sid || ringInfo.dr_ring_0_mo2 || ringInfo.d_ring_0_mo2) {//https://github.com/SabreTools/MPF/commit/d1c641e93408bdd630740dbd899e719e9aac4aff
           ringCodes = 'Data Side:\n' +
-                      'Mastering Ring: ' + ringInfo.d_ring_0_ma1 + '\n' + 
-                      'Mastering SID: ' + ringInfo.d_ring_0_ma1_sid + '\n' + 
-                      'Toolstamp/Mastering Code: ' + ringInfo.d_ring_0_ts1 + '\n' + 
-                      'Mould SID: ' + ringInfo.d_ring_0_mo1_sid + '\n' + 
-                      'Additional Mould: ' + (ringInfo.dr_ring_0_mo1 || ringInfo.d_ring_0_mo1) + '\n\n' + 
+                      'Mastering Ring: ' + getRingCode('d_ring_0_ma1') + '\n' + 
+                      'Mastering SID: ' + getRingCode('d_ring_0_ma1_sid') + '\n' + 
+                      'Toolstamp/Mastering Code: ' + getRingCode('d_ring_0_ts1') + '\n' + 
+                      'Mould SID: ' + getRingCode('d_ring_0_mo1_sid') + '\n' + 
+                      'Additional Mould: ' + getRingCode('dr_ring_0_mo1', 'd_ring_0_mo1') + '\n\n' + 
                       'Label Side: \n' + 
-                      'Mould SID: ' + ringInfo.d_ring_0_mo2_sid + '\n' + 
-                      'Additional Mould: ' + (ringInfo.dr_ring_0_mo2 || ringInfo.d_ring_0_mo2);
+                      'Mould SID: ' + getRingCode('d_ring_0_mo2_sid') + '\n' + 
+                      'Additional Mould: ' + getRingCode('dr_ring_0_mo2', 'd_ring_0_mo2');
           return ringCodes;
           break;
         } else {
-          ringCodes = 'Mastering Ring: ' + ringInfo.d_ring_0_ma1 + '\n' + 
-                      'Mastering SID: ' + ringInfo.d_ring_0_ma1_sid + '\n' + 
-                      'Toolstamp/Mastering Code: ' + ringInfo.d_ring_0_ts1 + '\n' + 
-                      'Mould SID: ' + ringInfo.d_ring_0_mo1_sid + '\n' + 
-                      'Additional Mould: ' + (ringInfo.dr_ring_0_mo1 || ringInfo.d_ring_0_mo1);
+          ringCodes = 'Mastering Ring: ' + getRingCode('d_ring_0_ma1') + '\n' + 
+                      'Mastering SID: ' + getRingCode('d_ring_0_ma1_sid') + '\n' + 
+                      'Toolstamp/Mastering Code: ' + getRingCode('d_ring_0_ts1') + '\n' + 
+                      'Mould SID: ' + getRingCode('d_ring_0_mo1_sid') + '\n' + 
+                      'Additional Mould: ' + getRingCode('dr_ring_0_mo1', 'd_ring_0_mo1');
           return ringCodes;
           break;
         }
@@ -307,83 +322,83 @@
       case 'Nintendo Wii U Optical Disc SL':
         if (file.size_and_checksums.d_layerbreak_3 != '0') {
           ringCodes = (reverseOrder ? "Layer 0 (Outer):\n" : "Layer 0 (Inner):\n") +
-                      'Mastering Ring: ' + ringInfo.d_ring_0_ma1 + '\n' +
-                      'Mastering SID: ' + ringInfo.d_ring_0_ma1_sid + '\n' +
-                      'Toolstamp/Mastering Code: ' + ringInfo.d_ring_0_ts1 + '\n' +
-                      'Data Side Mould SID: ' + ringInfo.d_ring_0_mo1_sid + '\n' +
-                      'Data Side Additional Mould: ' + (ringInfo.dr_ring_0_mo1 || ringInfo.d_ring_0_mo1) + '\n\n' +
+                      'Mastering Ring: ' + getRingCode('d_ring_0_ma1') + '\n' +
+                      'Mastering SID: ' + getRingCode('d_ring_0_ma1_sid') + '\n' +
+                      'Toolstamp/Mastering Code: ' + getRingCode('d_ring_0_ts1') + '\n' +
+                      'Data Side Mould SID: ' + getRingCode('d_ring_0_mo1_sid') + '\n' +
+                      'Data Side Additional Mould: ' + getRingCode('dr_ring_0_mo1', 'd_ring_0_mo1') + '\n\n' +
                       'Layer 1:\n' +
-                      'Mastering Ring: ' + ringInfo.d_ring_0_ma2 + '\n' +
-                      'Mastering SID: ' + ringInfo.d_ring_0_ma2_sid + '\n' +
-                      'Toolstamp/Mastering Code: ' + ringInfo.d_ring_0_ts2 + '\n' +
-                      'Label Side Mould SID: ' + ringInfo.d_ring_0_mo2_sid + '\n' +
-                      'Label Side Additional Mould: ' + (ringInfo.dr_ring_0_mo2 || ringInfo.d_ring_0_mo2) + '\n\n' +
+                      'Mastering Ring: ' + getRingCode('d_ring_0_ma2') + '\n' +
+                      'Mastering SID: ' + getRingCode('d_ring_0_ma2_sid') + '\n' +
+                      'Toolstamp/Mastering Code: ' + getRingCode('d_ring_0_ts2') + '\n' +
+                      'Label Side Mould SID: ' + getRingCode('d_ring_0_mo2_sid') + '\n' +
+                      'Label Side Additional Mould: ' + getRingCode('dr_ring_0_mo2', 'd_ring_0_mo2') + '\n\n' +
                       'Layer 2:\n' +
-                      'Mastering Ring: ' + ringInfo.d_ring_0_ma3 + '\n' +
-                      'Mastering SID: ' + ringInfo.d_ring_0_ma3_sid + '\n' +
-                      'Toolstamp/Mastering Code: ' + ringInfo.d_ring_0_ts3 + '\n\n' +
+                      'Mastering Ring: ' + getRingCode('d_ring_0_ma3') + '\n' +
+                      'Mastering SID: ' + getRingCode('d_ring_0_ma3_sid') + '\n' +
+                      'Toolstamp/Mastering Code: ' + getRingCode('d_ring_0_ts3') + '\n\n' +
                       (reverseOrder ? 'Layer 3 (Inner):\n' : 'Layer 3(Outer):\n') +
-                      'Mastering Ring: ' + ringInfo.d_ring_0_ma4 + '\n' +
-                      'Mastering SID: ' + ringInfo.d_ring_0_ma4_sid + '\n' +
-                      'Toolstamp/Mastering Code: ' + ringInfo.d_ring_0_ts4;
+                      'Mastering Ring: ' + getRingCode('d_ring_0_ma4') + '\n' +
+                      'Mastering SID: ' + getRingCode('d_ring_0_ma4_sid') + '\n' +
+                      'Toolstamp/Mastering Code: ' + getRingCode('d_ring_0_ts4');
           return ringCodes;
           break;
         } else if (file.size_and_checksums.d_layerbreak_2 != '0') {
           ringCodes = (reverseOrder ? "Layer 0 (Outer):\n" : "Layer 0 (Inner):\n") +
-                      'Mastering Ring: ' + ringInfo.d_ring_0_ma1 + '\n' +
-                      'Mastering SID: ' + ringInfo.d_ring_0_ma1_sid + '\n' +
-                      'Toolstamp/Mastering Code: ' + ringInfo.d_ring_0_ts1 + '\n' +
-                      'Data Side Mould SID: ' + ringInfo.d_ring_0_mo1_sid + '\n' +
-                      'Data Side Additional Mould: ' + (ringInfo.dr_ring_0_mo1 || ringInfo.d_ring_0_mo1) + '\n\n' +
+                      'Mastering Ring: ' + getRingCode('d_ring_0_ma1') + '\n' +
+                      'Mastering SID: ' + getRingCode('d_ring_0_ma1_sid') + '\n' +
+                      'Toolstamp/Mastering Code: ' + getRingCode('d_ring_0_ts1') + '\n' +
+                      'Data Side Mould SID: ' + getRingCode('d_ring_0_mo1_sid') + '\n' +
+                      'Data Side Additional Mould: ' + getRingCode('dr_ring_0_mo1', 'd_ring_0_mo1') + '\n\n' +
                       'Layer 1:\n' +
-                      'Mastering Ring: ' + ringInfo.d_ring_0_ma2 + '\n' +
-                      'Mastering SID: ' + ringInfo.d_ring_0_ma2_sid + '\n' +
-                      'Toolstamp/Mastering Code: ' + ringInfo.d_ring_0_ts2 + '\n' +
-                      'Label Side Mould SID: ' + ringInfo.d_ring_0_mo2_sid + '\n' +
-                      'Label Side Additional Mould: ' + (ringInfo.dr_ring_0_mo2 || ringInfo.d_ring_0_mo2) + '\n\n' +
+                      'Mastering Ring: ' + getRingCode('d_ring_0_ma2') + '\n' +
+                      'Mastering SID: ' + getRingCode('d_ring_0_ma2_sid') + '\n' +
+                      'Toolstamp/Mastering Code: ' + getRingCode('d_ring_0_ts2') + '\n' +
+                      'Label Side Mould SID: ' + getRingCode('d_ring_0_mo2_sid') + '\n' +
+                      'Label Side Additional Mould: ' + getRingCode('dr_ring_0_mo2', 'd_ring_0_mo2') + '\n\n' +
                       (reverseOrder ? 'Layer 2 (Inner):\n' : 'Layer 2 (Outer):\n') +
-                      'Mastering Ring: ' + ringInfo.d_ring_0_ma3 + '\n' +
-                      'Mastering SID: ' + ringInfo.d_ring_0_ma3_sid + '\n' +
-                      'Toolstamp/Mastering Code: ' + ringInfo.d_ring_0_ts3;
+                      'Mastering Ring: ' + getRingCode('d_ring_0_ma3') + '\n' +
+                      'Mastering SID: ' + getRingCode('d_ring_0_ma3_sid') + '\n' +
+                      'Toolstamp/Mastering Code: ' + getRingCode('d_ring_0_ts3');
           return ringCodes;
           break;
         } else if (file.size_and_checksums.d_layerbreak != '0') {
           ringCodes = (reverseOrder ? 'Layer 0 (Outer):\n' : 'Layer 0 (Inner):\n') +
-                      'Mastering Ring: ' + ringInfo.d_ring_0_ma1 + '\n' +
-                      'Mastering SID: ' + ringInfo.d_ring_0_ma1_sid + '\n' +
-                      'Toolstamp/Mastering Code: ' + ringInfo.d_ring_0_ts1 + '\n' +
-                      'Data Side Mould SID: ' + ringInfo.d_ring_0_mo1_sid + '\n' +
-                      'Data Side Additional Mould: ' + (ringInfo.dr_ring_0_mo1 || ringInfo.d_ring_0_mo1) + '\n\n' +
+                      'Mastering Ring: ' + getRingCode('d_ring_0_ma1') + '\n' +
+                      'Mastering SID: ' + getRingCode('d_ring_0_ma1_sid') + '\n' +
+                      'Toolstamp/Mastering Code: ' + getRingCode('d_ring_0_ts1') + '\n' +
+                      'Data Side Mould SID: ' + getRingCode('d_ring_0_mo1_sid') + '\n' +
+                      'Data Side Additional Mould: ' + getRingCode('dr_ring_0_mo1', 'd_ring_0_mo1') + '\n\n' +
                       (reverseOrder ? 'Layer 1 (Inner):\n' : 'Layer 1 (Outer):\n') +
-                      'Mastering Ring: ' + ringInfo.d_ring_0_ma2 + '\n' +
-                      'Mastering SID: ' + ringInfo.d_ring_0_ma2_sid + '\n' +
-                      'Toolstamp/Mastering Code: ' + ringInfo.d_ring_0_ts2 + '\n' +
-                      'Label Side Mould SID: ' + ringInfo.d_ring_0_mo2_sid + '\n' +
-                      'Label Side Additional Mould: ' + (ringInfo.dr_ring_0_mo2 || ringInfo.d_ring_0_mo2);
+                      'Mastering Ring: ' + getRingCode('d_ring_0_ma2') + '\n' +
+                      'Mastering SID: ' + getRingCode('d_ring_0_ma2_sid') + '\n' +
+                      'Toolstamp/Mastering Code: ' + getRingCode('d_ring_0_ts2') + '\n' +
+                      'Label Side Mould SID: ' + getRingCode('d_ring_0_mo2_sid') + '\n' +
+                      'Label Side Additional Mould: ' + getRingCode('dr_ring_0_mo2', 'd_ring_0_mo2');
           return ringCodes;
           break;
         } else {
           if (ringInfo.d_ring_0_ma2 || ringInfo.d_ring_0_ma2_sid || ringInfo.d_ring_0_ts2 || ringInfo.d_ring_0_mo2_sid || ringInfo.dr_ring_0_mo2 || ringInfo.d_ring_0_mo2) {
             ringCodes = 'Data Side:\n' +
-                        'Mastering Ring: ' + ringInfo.d_ring_0_ma1 + '\n' + 
-                        'Mastering SID: ' + ringInfo.d_ring_0_ma1_sid + '\n' + 
-                        'Toolstamp/Mastering Code: ' + ringInfo.d_ring_0_ts1 + '\n' + 
-                        'Mould SID: ' + ringInfo.d_ring_0_mo1_sid + '\n' + 
-                        'Additional Mould: ' + ringInfo.dr_ring_0_mo1 + '\n\n' + 
+                        'Mastering Ring: ' + getRingCode('d_ring_0_ma1') + '\n' + 
+                        'Mastering SID: ' + getRingCode('d_ring_0_ma1_sid') + '\n' + 
+                        'Toolstamp/Mastering Code: ' + getRingCode('d_ring_0_ts1') + '\n' + 
+                        'Mould SID: ' + getRingCode('d_ring_0_mo1_sid') + '\n' + 
+                        'Additional Mould: ' + getRingCode('dr_ring_0_mo1') + '\n\n' + 
                         'Label Side: \n' +
-                        'Mastering Ring: ' + ringInfo.d_ring_0_ma2 + '\n' +
-                        'Mastering SID: ' + ringInfo.d_ring_0_ma2_sid + '\n' +
-                        'Toolstamp/Mastering Code: ' + ringInfo.d_ring_0_ts2 + '\n' +
-                        'Mould SID: ' + ringInfo.d_ring_0_mo2_sid + '\n' +
-                        'Additional Mould: ' + (ringInfo.dr_ring_0_mo2 || ringInfo.d_ring_0_mo2);
+                        'Mastering Ring: ' + getRingCode('d_ring_0_ma2') + '\n' +
+                        'Mastering SID: ' + getRingCode('d_ring_0_ma2_sid') + '\n' +
+                        'Toolstamp/Mastering Code: ' + getRingCode('d_ring_0_ts2') + '\n' +
+                        'Mould SID: ' + getRingCode('d_ring_0_mo2_sid') + '\n' +
+                        'Additional Mould: ' + getRingCode('dr_ring_0_mo2', 'd_ring_0_mo2');
             return ringCodes;
             break;
           } else {
-            ringCodes = 'Mastering Ring: ' + ringInfo.d_ring_0_ma1 + '\n' + 
-                        'Mastering SID: ' + ringInfo.d_ring_0_ma1_sid + '\n' + 
-                        'Toolstamp/Mastering Code: ' + ringInfo.d_ring_0_ts1 + '\n' + 
-                        'Mould SID: ' + ringInfo.d_ring_0_mo1_sid + '\n' + 
-                        'Additional Mould: ' + (ringInfo.dr_ring_0_mo1 || ringInfo.d_ring_0_mo1);
+            ringCodes = 'Mastering Ring: ' + getRingCode('d_ring_0_ma1') + '\n' + 
+                        'Mastering SID: ' + getRingCode('d_ring_0_ma1_sid') + '\n' + 
+                        'Toolstamp/Mastering Code: ' + getRingCode('d_ring_0_ts1') + '\n' + 
+                        'Mould SID: ' + getRingCode('d_ring_0_mo1_sid') + '\n' + 
+                        'Additional Mould: ' + getRingCode('dr_ring_0_mo1', 'd_ring_0_mo1');
             return ringCodes;
             break;
           }
