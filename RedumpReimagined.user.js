@@ -3,7 +3,7 @@
 // @namespace   nightson1988@gmail.com
 // @match       http://redump.org/newdisc/*
 // @grant       none
-// @version     0.3.5
+// @version     0.3.5.1
 // @author      nightson
 // @description Make submission easier than ever before!
 // @updateURL   https://github.com/nightson/UserScripts/raw/main/RedumpReimagined.user.js
@@ -154,7 +154,7 @@
         return value;
       }
     }
-    resetForm('newdisc'); //Clear all fields of new disc form
+    unsafeWindow.resetForm('newdisc'); //Clear all fields of new disc form. Using unsafeWindow here because directly calling resetForm doesn't work in GreaseMonkey for some reason.
     document.getElementById('d_subinfo').value = JSON.stringify(file, filter, 2);
   }
 
