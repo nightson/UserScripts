@@ -3,15 +3,17 @@
 // @namespace   nightson1988@gmail.com
 // @match       http://redump.org/newdisc/*
 // @grant       none
-// @version     0.3.2
+// @version     0.3.5
 // @author      nightson
 // @description Make submission easier than ever before!
 // @updateURL   https://github.com/nightson/UserScripts/raw/main/RedumpReimagined.user.js
 // @downloadURL https://github.com/nightson/UserScripts/raw/main/RedumpReimagined.user.js
+// @history     0.3.5 Remove placeholders when parsing the sub info instead of reading the JSON file.
+// @history     0.3.4 Handle missing values and nulls in the ring codes entries correctly.
 // @history     0.3.3 Clear all fields after selecting an JSON file in case there is any leftover infomation.
 // @history     0.3.2 Compatible with MPF's ring serialization fix: https://github.com/SabreTools/MPF/commit/d1c641e93408bdd630740dbd899e719e9aac4aff
-// @history     0.3.1 Fixed category selection and made the script compatible with older versions of MPF again.
-// @history     0.3 Updated the script to be compatible with MPF v2.3
+// @history     0.3.1 Fix category selection and make the script compatible with older versions of MPF again.
+// @history     0.3 Update the script to be compatible with MPF v2.3
 // ==/UserScript==
 (function (){
   //Insert submission information input
@@ -29,8 +31,9 @@
     let str = document.getElementById('d_subinfo').value;
     
     if (str.trim() === '') {
-      alert ('Submission info is empty!')
+      alert ('Submission info is empty!');
     } else if (isJSON(str) && typeof JSON.parse(str).common_disc_info != 'undefined') {//Check if string is MPF JSON output
+      str = str.replace(/\[T:ISBN\] \(OPTIONAL\)|\(REQUIRED\)|\(OPTIONAL\)|\(REQUIRED, IF EXISTS\)|\(CHECK WITH PROTECTIONID\)/g, '');//Remove Placeholders
       let subInfo = JSON.parse(str),
           commonInfo = subInfo.common_disc_info;
       
@@ -152,7 +155,7 @@
       }
     }
     resetForm('newdisc'); //Clear all fields of new disc form
-    document.getElementById('d_subinfo').value = JSON.stringify(file, filter, 2).replace(/\[T:ISBN\] \(OPTIONAL\)|\(REQUIRED\)|\(OPTIONAL\)|\(REQUIRED, IF EXISTS\)|\(CHECK WITH PROTECTIONID\)/g, '');//Remove Placeholders
+    document.getElementById('d_subinfo').value = JSON.stringify(file, filter, 2);
   }
 
   //https://stackoverflow.com/questions/23344776/how-to-access-data-of-uploaded-json-file
