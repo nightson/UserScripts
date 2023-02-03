@@ -1,9 +1,9 @@
 // ==UserScript==
 // @name        Rundong Pal
 // @namespace   nightson1988@gmail.com
-// @match       http://rundongex.com/Forms/Member/WayBill/WayBill_Add.aspx
+// @match       http://rundongex.com.cn/Forms/Member/WayBill/WayBill_Add.aspx
 // @grant       none
-// @version     0.1
+// @version     0.2
 // @author      nightson
 // @description Script that makes Rundong more user-friendly.
 // @updateURL   https://raw.githubusercontent.com/nightson/UserScripts/main/RundongPal.user.js
