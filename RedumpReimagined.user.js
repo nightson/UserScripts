@@ -3,11 +3,12 @@
 // @namespace   nightson1988@gmail.com
 // @match       http://redump.org/newdisc/*
 // @grant       none
-// @version     0.3.5.2
+// @version     0.3.5.3
 // @author      nightson
 // @description Make submission easier than ever before!
 // @updateURL   https://github.com/nightson/UserScripts/raw/main/RedumpReimagined.user.js
 // @downloadURL https://github.com/nightson/UserScripts/raw/main/RedumpReimagined.user.js
+// @history     0.3.5.3 Don't fill the copy protection field if JSON says "None found" or "Exception Opening File".
 // @history     0.3.5.2 Fixed typo.
 // @history     0.3.5 Remove placeholders when parsing the sub info instead of when reading the JSON file.
 // @history     0.3.4 Handle missing values and nulls in the ring codes entries correctly.
@@ -113,6 +114,7 @@
       fillForm('#d_libcrypt', subInfo.copy_protection.d_libcrypt);
       //Protection
       if (typeof subInfo.copy_protection.d_protection != undefined) {
+        if (/^None\sfound|^Exception\sopening\sfile/.test(subInfo.copy_protection.d_protection)) return;
         fillForm('#d_protection', subInfo.copy_protection.d_protection);
       }
       //SecuROM data
