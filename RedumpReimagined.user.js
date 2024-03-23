@@ -3,11 +3,12 @@
 // @namespace   nightson1988@gmail.com
 // @match       http://redump.org/newdisc/*
 // @grant       none
-// @version     0.3.5.4
+// @version     0.3.5.5
 // @author      nightson
 // @description Make submission easier than ever before!
 // @updateURL   https://github.com/nightson/UserScripts/raw/main/RedumpReimagined.user.js
 // @downloadURL https://github.com/nightson/UserScripts/raw/main/RedumpReimagined.user.js
+// @history     0.3.5.5 Fixed issue with possitive offset string since https://github.com/SabreTools/MPF/commit/c75d2dcae29944d0ffbede81cb89510a748f4f91
 // @history     0.3.5.4 Fixed a stupid bug in the previous version.
 // @history     0.3.5.3 Don't fill the copy protection field if JSON says "None found" or "Exception Opening File".
 // @history     0.3.5.2 Fixed typo.
@@ -130,7 +131,8 @@
       fillForm('#d_cue', subInfo.tracks_and_write_offsets.d_cue);
       //Disc Offset
       if (typeof subInfo.tracks_and_write_offsets.d_offset_text != "undefined") {
-        let offsetValue = (parseInt(subInfo.tracks_and_write_offsets.d_offset_text.trim()) > 0) ? ('+' + subInfo.tracks_and_write_offsets.d_offset_text) : subInfo.tracks_and_write_offsets.d_offset_text;
+        let offset = parseInt(subInfo.tracks_and_write_offsets.d_offset_text.trim();
+        let offsetValue = (offset > 0) ? ('+' + offset) : offset;
         if (document.querySelector('input[value="' + offsetValue + '"]')) {
           checkBySelector('input[name="d_offset[]"][value="' + offsetValue + '"]');
         } else {
