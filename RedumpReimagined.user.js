@@ -131,7 +131,7 @@
       fillForm('#d_cue', subInfo.tracks_and_write_offsets.d_cue);
       //Disc Offset
       if (typeof subInfo.tracks_and_write_offsets.d_offset_text != "undefined") {
-        let offset = parseInt(subInfo.tracks_and_write_offsets.d_offset_text.trim();
+        let offset = parseInt(subInfo.tracks_and_write_offsets.d_offset_text.trim());
         let offsetValue = (offset > 0) ? ('+' + offset) : offset;
         if (document.querySelector('input[value="' + offsetValue + '"]')) {
           checkBySelector('input[name="d_offset[]"][value="' + offsetValue + '"]');
