@@ -3,11 +3,12 @@
 // @namespace   nightson1988@gmail.com
 // @match       http://redump.org/newdisc/*
 // @grant       none
-// @version     0.3.5.6
+// @version     0.3.6.0
 // @author      nightson
 // @description Make submission easier than ever before!
 // @updateURL   https://github.com/nightson/UserScripts/raw/main/RedumpReimagined.user.js
 // @downloadURL https://github.com/nightson/UserScripts/raw/main/RedumpReimagined.user.js
+// @history     0.3.6.0 Added an mandatory input for the log files link so you won't forget it anymore :P as requested by https://github.com/nightson/UserScripts/issues/8
 // @history     0.3.5.6 Fixed typo.
 // @history     0.3.5.5 Fixed issue with possitive offset string since https://github.com/SabreTools/MPF/commit/c75d2dcae29944d0ffbede81cb89510a748f4f91.
 // @history     0.3.5.4 Fixed a stupid bug in the previous version.
@@ -23,25 +24,29 @@
 (function (){
   //Insert submission information input
   let parser = new DOMParser(),
-      htmlString = '<fieldset id="fieldset_subinfo"><legend>Submission Info</legend><input id="d_subjson" type="file" accept=".json;.txt"><br><textarea id="d_subinfo" style="width: 600px; height: 300px;"></textarea><br><input id="d_parse" type="button" value="Parse"></fieldset>',
+      htmlString = '<fieldset id="fieldset_subinfo"><legend>Submission Info</legend><label for="d_loglink" style="font-weight:bold">Log Files Link: </label><br><input type="url" placeholder="Required" id="d_loglink" style="width: 600px; height: 20px;"></input><br><br><label for="d_subinfo" style="font-weight:bold">Select MPF JSON: </label><br><input id="d_subjson" type="file" accept=".json;.txt"><br><textarea id="d_subinfo" style="width: 600px; height: 300px;"></textarea><br><input id="d_parse" type="button" value="Parse"></fieldset>',
       insertNode = document.querySelector('#newdisc fieldset'),
       node = parser.parseFromString(htmlString, "text/html").getElementById('fieldset_subinfo');
 
   insertNode.parentNode.insertBefore(node, insertNode);
-  
+
   document.getElementById('d_subjson').addEventListener('change', readJSON);
   document.getElementById('d_parse').addEventListener('click', parse);
-  
+
   function parse(event) {
     let str = document.getElementById('d_subinfo').value;
-    
+    let logInput = document.getElementById('d_loglink').value;
+    if (logInput.trim() === '') {
+      alert('Please provide a link to your dumping log files.');
+    }
+
     if (str.trim() === '') {
-      alert ('Submission info is empty!');
+      alert('Submission info is empty!');
     } else if (isJSON(str) && typeof JSON.parse(str).common_disc_info != 'undefined') {//Check if string is MPF JSON output
       str = str.replace(/\[T:ISBN\] \(OPTIONAL\)|\(REQUIRED\)|\(OPTIONAL\)|\(REQUIRED, IF EXISTS\)|\(CHECK WITH PROTECTIONID\)/g, '');//Remove Placeholders
       let subInfo = JSON.parse(str),
           commonInfo = subInfo.common_disc_info;
-      
+
       /* Common disc info section*/
       //Main Title
       fillForm('#d_title', commonInfo.d_title);
@@ -76,10 +81,10 @@
       //Disc Errors
       fillForm('#d_errors', commonInfo.d_errors);
       //Comments
-      fillForm('#d_comments', commonInfo.d_comments);
+      fillForm('#d_comments', 'Logs: ' + logInput + '\n\n' + commonInfo.d_comments);
       //Contents
       fillForm('#d_contents', commonInfo.d_contents);
-      
+
       /*Version and editions*/
       //Version
       fillForm('#d_version', subInfo.versions_and_editions.d_version);
@@ -108,7 +113,7 @@
       fillForm('#d_bca', subInfo.extras.d_bca);
       //Security Sector Ranges
       fillForm('#d_ssranges', subInfo.extras.d_ssranges);
-      
+
 
       /* Copy protection */
       //Anti-modchip protection
@@ -124,7 +129,7 @@
       //SecuROM data
       fillForm('#d_securom', subInfo.copy_protection.d_securom);
 
-     
+
       /* Tracks and write offsets */
       //DAT
       fillForm('#d_tracks', subInfo.tracks_and_write_offsets.d_tracks);
@@ -140,19 +145,19 @@
           fillForm('#d_offset_text', offsetValue);
         }
       }
-      
+
       /* Size & checksums (DVD/BD/UMD-based) */
       fillForm('#d_layerbreak', subInfo.size_and_checksums.d_layerbreak);
       fillForm('#d_size', subInfo.size_and_checksums.d_size);
       fillForm('#d_crc32', subInfo.size_and_checksums.d_crc32);
       fillForm('#d_md5', subInfo.size_and_checksums.d_md5);
       fillForm('#d_sha1', subInfo.size_and_checksums.d_sha1);
-    } else if (/^-{80}/.test(str)) {//Check if string is in my own submission info format. 
+    } else if (/^-{80}/.test(str)) {//Check if string is in my own submission info format.
     } else {
       console.log ('Redump Reimagined || Error: Unknown Information Format!');
     }
   }
-  
+
   async function readJSON(event) {
     let file = await fileToJSON(event.target.files[0]);
     function filter(key, value){
@@ -192,7 +197,7 @@
       return false;
     }
   }
-  
+
   function regex(re, str) {
     if (typeof re.match(str) === null) {
       console.log('Redump Reimagined || Error: Regular expression "' + re + '" doesn\'t match anything');
@@ -203,7 +208,7 @@
       return re.match(str);
     }
   }
-  
+
   function fillForm(cssSelector, value) {
     if (!document.querySelector(cssSelector)) {
       console.log('Redump Reimagined || Error: CSS selector "' + cssSelector + '" doesn\'t match any element on the page!');
@@ -211,21 +216,21 @@
       console.log('Redump Reimagined || Error: Value doesn\'t exist!');
     } else {
       switch (value.toString().trim()){
-        case 'Disc has no PVD': 
+        case 'Disc has no PVD':
           console.log('Redump Reimagined || Disc has no PVD');
           break;
-        case 'None found': 
+        case 'None found':
           console.log('Redump Reimagined || Protection not found');
           break;
-        case 'Path could not be scanned!': 
+        case 'Path could not be scanned!':
           console.log('Redump Reimagined || Path could not be scanned!');
           break;
-        default: 
+        default:
           document.querySelector(cssSelector).value = value;
       }
     }
   }
-  
+
   function checkBySelector(cssSelector) {
     if (!document.querySelector(cssSelector)){
       console.log('Redump Reimagined || Error: CSS selector "' + cssSelector + '" doesn\'t match any element on the page!');
@@ -241,7 +246,7 @@
       document.querySelector(cssSelector).selected = true;
     }
   }
-  
+
   function selectByTextContent(cssSelector, text, mode) {//mode 1: exact match; mode 2: includes text.
     if (!document.querySelector(cssSelector)){
       console.log('Redump Reimagined || Error: CSS selector "' + cssSelector + '" doesn\'t match any element on the page!');
@@ -297,21 +302,21 @@
       case 'GD-ROM':
         if (ringInfo.d_ring_0_mo2_sid || ringInfo.dr_ring_0_mo2 || ringInfo.d_ring_0_mo2) {//https://github.com/SabreTools/MPF/commit/d1c641e93408bdd630740dbd899e719e9aac4aff
           ringCodes = 'Data Side:\n' +
-                      'Mastering Ring: ' + getRingCode('d_ring_0_ma1') + '\n' + 
-                      'Mastering SID: ' + getRingCode('d_ring_0_ma1_sid') + '\n' + 
-                      'Toolstamp/Mastering Code: ' + getRingCode('d_ring_0_ts1') + '\n' + 
-                      'Mould SID: ' + getRingCode('d_ring_0_mo1_sid') + '\n' + 
-                      'Additional Mould: ' + getRingCode('dr_ring_0_mo1', 'd_ring_0_mo1') + '\n\n' + 
-                      'Label Side: \n' + 
-                      'Mould SID: ' + getRingCode('d_ring_0_mo2_sid') + '\n' + 
+                      'Mastering Ring: ' + getRingCode('d_ring_0_ma1') + '\n' +
+                      'Mastering SID: ' + getRingCode('d_ring_0_ma1_sid') + '\n' +
+                      'Toolstamp/Mastering Code: ' + getRingCode('d_ring_0_ts1') + '\n' +
+                      'Mould SID: ' + getRingCode('d_ring_0_mo1_sid') + '\n' +
+                      'Additional Mould: ' + getRingCode('dr_ring_0_mo1', 'd_ring_0_mo1') + '\n\n' +
+                      'Label Side: \n' +
+                      'Mould SID: ' + getRingCode('d_ring_0_mo2_sid') + '\n' +
                       'Additional Mould: ' + getRingCode('dr_ring_0_mo2', 'd_ring_0_mo2');
           return ringCodes;
           break;
         } else {
-          ringCodes = 'Mastering Ring: ' + getRingCode('d_ring_0_ma1') + '\n' + 
-                      'Mastering SID: ' + getRingCode('d_ring_0_ma1_sid') + '\n' + 
-                      'Toolstamp/Mastering Code: ' + getRingCode('d_ring_0_ts1') + '\n' + 
-                      'Mould SID: ' + getRingCode('d_ring_0_mo1_sid') + '\n' + 
+          ringCodes = 'Mastering Ring: ' + getRingCode('d_ring_0_ma1') + '\n' +
+                      'Mastering SID: ' + getRingCode('d_ring_0_ma1_sid') + '\n' +
+                      'Toolstamp/Mastering Code: ' + getRingCode('d_ring_0_ts1') + '\n' +
+                      'Mould SID: ' + getRingCode('d_ring_0_mo1_sid') + '\n' +
                       'Additional Mould: ' + getRingCode('dr_ring_0_mo1', 'd_ring_0_mo1');
           return ringCodes;
           break;
@@ -391,11 +396,11 @@
         } else {
           if (ringInfo.d_ring_0_ma2 || ringInfo.d_ring_0_ma2_sid || ringInfo.d_ring_0_ts2 || ringInfo.d_ring_0_mo2_sid || ringInfo.dr_ring_0_mo2 || ringInfo.d_ring_0_mo2) {
             ringCodes = 'Data Side:\n' +
-                        'Mastering Ring: ' + getRingCode('d_ring_0_ma1') + '\n' + 
-                        'Mastering SID: ' + getRingCode('d_ring_0_ma1_sid') + '\n' + 
-                        'Toolstamp/Mastering Code: ' + getRingCode('d_ring_0_ts1') + '\n' + 
-                        'Mould SID: ' + getRingCode('d_ring_0_mo1_sid') + '\n' + 
-                        'Additional Mould: ' + getRingCode('dr_ring_0_mo1') + '\n\n' + 
+                        'Mastering Ring: ' + getRingCode('d_ring_0_ma1') + '\n' +
+                        'Mastering SID: ' + getRingCode('d_ring_0_ma1_sid') + '\n' +
+                        'Toolstamp/Mastering Code: ' + getRingCode('d_ring_0_ts1') + '\n' +
+                        'Mould SID: ' + getRingCode('d_ring_0_mo1_sid') + '\n' +
+                        'Additional Mould: ' + getRingCode('dr_ring_0_mo1') + '\n\n' +
                         'Label Side: \n' +
                         'Mastering Ring: ' + getRingCode('d_ring_0_ma2') + '\n' +
                         'Mastering SID: ' + getRingCode('d_ring_0_ma2_sid') + '\n' +
@@ -405,10 +410,10 @@
             return ringCodes;
             break;
           } else {
-            ringCodes = 'Mastering Ring: ' + getRingCode('d_ring_0_ma1') + '\n' + 
-                        'Mastering SID: ' + getRingCode('d_ring_0_ma1_sid') + '\n' + 
-                        'Toolstamp/Mastering Code: ' + getRingCode('d_ring_0_ts1') + '\n' + 
-                        'Mould SID: ' + getRingCode('d_ring_0_mo1_sid') + '\n' + 
+            ringCodes = 'Mastering Ring: ' + getRingCode('d_ring_0_ma1') + '\n' +
+                        'Mastering SID: ' + getRingCode('d_ring_0_ma1_sid') + '\n' +
+                        'Toolstamp/Mastering Code: ' + getRingCode('d_ring_0_ts1') + '\n' +
+                        'Mould SID: ' + getRingCode('d_ring_0_mo1_sid') + '\n' +
                         'Additional Mould: ' + getRingCode('dr_ring_0_mo1', 'd_ring_0_mo1');
             return ringCodes;
             break;
